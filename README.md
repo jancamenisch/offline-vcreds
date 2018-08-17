@@ -89,10 +89,19 @@ A solution to this problem MUST allow the Holder's Agent to perform the followin
   * [Anoncred Data Model](https://github.com/sovrin-foundation/vc-data-model/tree/anoncred)
   * [VC PR 213](https://github.com/w3c/vc-data-model/pull/213)
   * [VC PR 214](https://github.com/w3c/vc-data-model/pull/214)
-* Can Indy support hierarchical proofs within ZKP processing? This implies recursive verification of Issuer Certification Chain (list of trusted certifiers backing the Issuer).
-* How does Verifier's proof-response verification process change for the inclusion of the known Trusted Root Authorities.
+  
+  This issue is independent of whether the verifier is off or on line. 
+  
+* Can Indy support hierarchical PKI solutions:
+   * At the prover: This implies recursive verification of Issuer Certification Chain (list of trusted certifiers backing the Issuer).
+    * At the verifier: How does Verifier's proof-response verification process change for the inclusion of the known Trusted Root Authorities.
 
+* How does can the verifier cache the verification keys so that no connection to a ledger is needed. (according to Nathan George, this should already work).
 
 
 ## Solution Description
 TBD
+A possible solution requires a hierarchical PKI. The verifier would then preload the top level public key. The prover would store her own credential (and the related information) as well as all public verification keys of all issuers and the credentials on these keys up to the verification key of the top level authority. When generating a presentation proof, the prover would generate this proof as usually, but then also send all the public verification keys of the intermediate issuers and the respective credentials on these keys. The verifier would then have to verifiy the full chain (as opposed to only look up the issuer's verification key on the ledger).
+
+
+Another solution would be to use a cryptographic construction of a hierarchical credential system. That would look similar, but the prover could also hide attribute of the credentials of the intermediate issuers. 
